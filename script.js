@@ -1,9 +1,10 @@
 let contentCount = 1;
+let quillInstances = [];
 
 function addContentGroup() {
     contentCount++;
     const contentAreas = document.getElementById('content-areas');
-    
+
     const contentGroup = document.createElement('div');
     contentGroup.className = 'content-group';
     contentGroup.innerHTML = `
@@ -11,16 +12,31 @@ function addContentGroup() {
         <textarea id="heading-input-${contentCount}" class="heading-input" placeholder="Type your heading here..."></textarea>
         
         <label for="paragraph-input-${contentCount}">Enter Paragraph ${contentCount}:</label>
-        <textarea id="paragraph-input-${contentCount}" class="paragraph-input" placeholder="Type your paragraph here..."></textarea>
+        <div id="paragraph-editor-${contentCount}" class="paragraph-editor"></div>
     `;
-    
+
     contentAreas.appendChild(contentGroup);
+
+    // Initialize Quill for the new paragraph editor
+    let quill = new Quill(`#paragraph-editor-${contentCount}`, {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link', 'image']
+            ]
+        }
+    });
+    quillInstances.push(quill);
 }
 
 function removeContentGroup() {
     if (contentCount > 1) {
         const contentAreas = document.getElementById('content-areas');
         contentAreas.removeChild(contentAreas.lastChild);
+        quillInstances.pop();  // Remove the last Quill instance
         contentCount--;
     }
 }
@@ -59,11 +75,11 @@ function updateStylePreview() {
 function generateHTML() {
     const style = document.getElementById('style-select').value;
     let htmlOutput = '';
-    
+
     for (let i = 1; i <= contentCount; i++) {
         const heading = document.getElementById(`heading-input-${i}`).value;
-        const paragraph = document.getElementById(`paragraph-input-${i}`).value;
-        
+        const paragraph = quillInstances[i - 1].root.innerHTML;
+
         if (style === 'style1') {
             htmlOutput += `
             <div style="max-width: 800px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px;">
@@ -88,5 +104,21 @@ function generateHTML() {
     document.getElementById('output').textContent = htmlOutput;
 }
 
-// Call updateStylePreview initially to show the preview of the default selected style
-updateStylePreview();
+// Initialize Quill for the first paragraph editor on page load
+document.addEventListener("DOMContentLoaded", function() {
+    let quill = new Quill('#paragraph-editor-1', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link', 'image']
+            ]
+        }
+    });
+    quillInstances.push(quill);
+
+    // Call updateStylePreview initially to show the preview of the default selected style
+    updateStylePreview();
+});

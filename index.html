@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas LMS HTML Generator</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Include Quill styles -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Canvas LMS HTML Generator</h1>
-        
+
         <label for="style-select">Choose a Style:</label>
         <select id="style-select" onchange="updateStylePreview()">
             <option value="style1">Style 1</option>
@@ -17,10 +20,7 @@
             <option value="style3">Style 3</option>
         </select>
 
-        <!-- Style Preview Section -->
-        <div id="style-preview" class="style-preview">
-            <!-- This is where the style preview will appear -->
-        </div>
+        <div id="style-preview" class="style-preview"></div>
 
         <div id="content-areas">
             <div class="content-group">
@@ -28,17 +28,21 @@
                 <textarea id="heading-input-1" class="heading-input" placeholder="Type your heading here..."></textarea>
                 
                 <label for="paragraph-input-1">Enter Paragraph 1:</label>
-                <textarea id="paragraph-input-1" class="paragraph-input" placeholder="Type your paragraph here..."></textarea>
+                <!-- Quill editor container -->
+                <div id="paragraph-editor-1" class="paragraph-editor"></div>
             </div>
         </div>
-        
+
         <button id="add-content" onclick="addContentGroup()">Add Another Heading and Paragraph</button>
         <button id="remove-content" onclick="removeContentGroup()">Remove Last Heading and Paragraph</button>
-        
+
         <button onclick="generateHTML()">Generate HTML</button>
 
         <div id="output" class="output"></div>
     </div>
+
+    <!-- Include Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
