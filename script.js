@@ -17,17 +17,9 @@ function addContentGroup() {
 
     contentAreas.appendChild(contentGroup);
 
-    // Initialize Quill for the new paragraph editor
+    // Initialize Quill for the new paragraph editor with version 2
     let quill = new Quill(`#paragraph-editor-${contentCount}`, {
         theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['link', 'image']
-            ]
-        }
     });
     quillInstances.push(quill);
 }
@@ -104,18 +96,10 @@ function generateHTML() {
     document.getElementById('output').textContent = htmlOutput;
 }
 
-// Initialize Quill for the first paragraph editor on page load
+// Initialize Quill for the first paragraph editor on page load with version 2
 document.addEventListener("DOMContentLoaded", function() {
     let quill = new Quill('#paragraph-editor-1', {
         theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['link', 'image']
-            ]
-        }
     });
     quillInstances.push(quill);
 
