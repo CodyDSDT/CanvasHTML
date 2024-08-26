@@ -1,6 +1,19 @@
 let contentCount = 1;
 let quillInstances = [];
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize Quill for the first paragraph editor on page load
+    const firstEditor = document.querySelector('#paragraph-editor-1');
+    if (firstEditor) {
+        const quill = new Quill(firstEditor, {
+            theme: 'snow'
+        });
+        quillInstances.push(quill);
+    }
+
+    updateStylePreview();  // Show preview on load
+});
+
 function addContentGroup() {
     contentCount++;
     const contentAreas = document.getElementById('content-areas');
@@ -17,11 +30,14 @@ function addContentGroup() {
 
     contentAreas.appendChild(contentGroup);
 
-    // Initialize Quill for the new paragraph editor with version 2
-    let quill = new Quill(`#paragraph-editor-${contentCount}`, {
-        theme: 'snow',
-    });
-    quillInstances.push(quill);
+    // Initialize Quill for the new paragraph editor
+    const newEditor = document.querySelector(`#paragraph-editor-${contentCount}`);
+    if (newEditor) {
+        const quill = new Quill(newEditor, {
+            theme: 'snow'
+        });
+        quillInstances.push(quill);
+    }
 }
 
 function removeContentGroup() {
@@ -95,14 +111,3 @@ function generateHTML() {
 
     document.getElementById('output').textContent = htmlOutput;
 }
-
-// Initialize Quill for the first paragraph editor on page load with version 2
-document.addEventListener("DOMContentLoaded", function() {
-    let quill = new Quill('#paragraph-editor-1', {
-        theme: 'snow',
-    });
-    quillInstances.push(quill);
-
-    // Call updateStylePreview initially to show the preview of the default selected style
-    updateStylePreview();
-});
